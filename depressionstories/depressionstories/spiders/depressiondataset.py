@@ -15,6 +15,11 @@ class DepressiondatasetSpider(scrapy.Spider):
             if link is not None:
                 present_link = link
                 yield response.follow(url=present_link, callback=self.parse_story)
+        next_page = response.xpath('//a[@title="Go to next page"]/@href').get()       
+        if next_page:
+            yield response.follow(url=next_page, callback= self.parse)
+
+        
 
     def parse_story(seld,response):
         name_of_scrapees = response.xpath('//span[@class="blog-name"]/text()').get()
